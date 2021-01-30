@@ -1,0 +1,246 @@
+{
+  "homeData": [
+    {
+      "id": 0,
+      "title": "Как я сходил на FrontEnd Conf 2021",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum volutpat orci turpis urna. Et vestibulum, posuere tortor lacinia sit. Sagittis porttitor orci auctor in at tincidunt arcu egestas. Fusce arcu sodales lacinia eu auctor nunc nam id. Diam sit sed volutpat massa. Egestas ornare vel volutpat.",
+      "data": "21.06.2020",
+      "label": "создание сайтов",
+      "img": "img3.jpg",
+      "alt": "img",
+      "btn": "читать далее"
+    },
+    {
+      "id": 1,
+      "title": "Купил новый ноутбук за 150 000 руб",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum volutpat orci turpis urna. Et vestibulum, posuere tortor lacinia sit. Sagittis porttitor orci auctor in at tincidunt arcu egestas. Fusce arcu sodales lacinia eu auctor nunc nam id. Diam sit sed volutpat massa. Egestas ornare vel volutpat.",
+      "data": "21.06.2020",
+      "label": "продвижение видео",
+      "img": "img2.png",
+      "alt": "img2",
+      "btn": "оставить комментарий"
+    },
+    {
+      "id": 2,
+      "title": "Как писать код быстро и безболезненно?",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum volutpat orci turpis urna. Et vestibulum, posuere tortor lacinia sit. Sagittis porttitor orci auctor in at tincidunt arcu egestas. Fusce arcu sodales lacinia eu auctor nunc nam id. Diam sit sed volutpat massa. Egestas ornare vel volutpat.",
+      "data": "21.06.2020",
+      "label": "создание сайтов",
+      "img": "img1.jpg",
+      "alt": "img1",
+      "btn": "читать далее"
+    }
+  ],
+  "homeDataMore": [
+    {
+      "id": 0,
+      "title": "Как я сходил на FrontEnd Conf 2021",
+      "text": "oe'abnvhi;n'rewqhovuiqenbrqbnqo[bh[uhb",
+      "img": "img.png",
+      "data": "21.06.2020",
+      "label": "создание сайтов",
+      "links": [
+        {
+          "title": "Как я сходил на FrontEnd Conf 2021",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Как писать код быстро и елегантно без смс",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Купил новый ноутбук за 150 000 руб",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Купил новый ноутбук за 10 000 руб",
+          "data": "21.06.2020"
+        }
+      ],
+      "comments": [
+        {
+          "img": "img1.png",
+          "name": "vadim",
+          "date": "21.10.2020",
+          "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis sunt tempora perferendis eligendi molestias? Consequuntur quasi eos libero porro quos, quibusdam quia veniam nihil repudiandae ad corrupti, reiciendis id distinctio."
+        },
+        {
+          "img": "img2.png",
+          "name": "notVadim",
+          "date": "22.01.2020",
+          "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis sunt tempora perferendis eligendi molestias? Consequuntur quasi eos libero porro quos, quibusdam quia veniam nihil repudiandae ad corrupti, reiciendis id distinctio."
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "title": "Купил новый ноутбук за 150 000 руб",
+      "text": "oe'abnvhi;n'rewqhovuiqenbrqbnqo[bh[uhb",
+      "img": "img.png",
+      "data": "21.06.2020",
+      "label": "создание сайтов",
+      "links": [
+        {
+          "title": "Как я сходил на FrontEnd Conf 2021",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Как писать код быстро и елегантно без смс",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Купил новый ноутбук за 150 000 руб",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Купил новый ноутбук за 10 000 руб",
+          "data": "21.06.2020"
+        }
+      ],
+      "comments": [
+        {
+          "img": "img1.png",
+          "name": "vadim",
+          "date": "21.10.2020",
+          "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis sunt tempora perferendis eligendi molestias? Consequuntur quasi eos libero porro quos, quibusdam quia veniam nihil repudiandae ad corrupti, reiciendis id distinctio."
+        },
+        {
+          "img": "img2.png",
+          "name": "notVadim",
+          "date": "22.01.2020",
+          "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis sunt tempora perferendis eligendi molestias? Consequuntur quasi eos libero porro quos, quibusdam quia veniam nihil repudiandae ad corrupti, reiciendis id distinctio."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Как писать код быстро и безболезненно?",
+      "text": "oe'abnvhi;n'rewqhovuiqenbrqbnqo[bh[uhb",
+      "img": "img.png",
+      "data": "21.06.2020",
+      "label": "создание сайтов",
+      "links": [
+        {
+          "title": "Как я сходил на FrontEnd Conf 2021",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Как писать код быстро и елегантно без смс",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Купил новый ноутбук за 150 000 руб",
+          "data": "21.06.2020"
+        },
+        {
+          "title": "Купил новый ноутбук за 10 000 руб",
+          "data": "21.06.2020"
+        }
+      ],
+      "comments": [
+        {
+          "img": "img1.png",
+          "name": "vadim",
+          "date": "21.10.2020",
+          "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis sunt tempora perferendis eligendi molestias? Consequuntur quasi eos libero porro quos, quibusdam quia veniam nihil repudiandae ad corrupti, reiciendis id distinctio."
+        },
+        {
+          "img": "img2.png",
+          "name": "notVadim",
+          "date": "22.01.2020",
+          "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis sunt tempora perferendis eligendi molestias? Consequuntur quasi eos libero porro quos, quibusdam quia veniam nihil repudiandae ad corrupti, reiciendis id distinctio."
+        }
+      ]
+    },
+    {
+      "img": "",
+      "name": "Vadim",
+      "date": "23.01.2021",
+      "text": "lkmnkjl",
+      "id": 3
+    },
+    {
+      "img": "",
+      "name": "Vadim",
+      "date": "25.01.2021",
+      "text": "lvuy",
+      "id": 4
+    }
+  ],
+  "works": [
+    {
+      "id": 0,
+      "title": "apple.com",
+      "link": "https://www.apple.com/",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum volutpat orci turpis urna. Et vestibulum, posuere tortor lacinia sit. Sagittis porttitor orci auctor in at tincidunt arcu egestas. Fusce arcu sodales lacinia eu auctor nunc nam id. Diam sit sed volutpat massa. Egestas ornare vel volutpat.",
+      "img": "img1.jpg",
+      "alt": "img1",
+      "tags": [
+        "дизайн",
+        "создание сайта",
+        "SMM"
+      ]
+    },
+    {
+      "id": 1,
+      "title": "marvel.com",
+      "link": "https://www.marvel.com/",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum volutpat orci turpis urna. Et vestibulum, posuere tortor lacinia sit. Sagittis porttitor orci auctor in at tincidunt arcu egestas.",
+      "img": "img2.jpg",
+      "alt": "img2",
+      "tags": [
+        "дизайн",
+        "создание сайта",
+        "SMM"
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "id": 0,
+      "title": "Отдыхаю на природе",
+      "date": "21.09.2020",
+      "img": "img1.png",
+      "bigVideo": "big.jpeg",
+      "alt": "img1"
+    },
+    {
+      "id": 1,
+      "title": "Заканчиваю сложный проект",
+      "date": "15.09.2020",
+      "img": "img2.jpg",
+      "bigVideo": "big2.jpg",
+      "alt": "img2"
+    },
+    {
+      "id": 2,
+      "title": "Переехал в новую квартиру",
+      "date": "11.09.2020",
+      "img": "img3.jpg",
+      "bigVideo": "big3.jpg",
+      "alt": "img3"
+    },
+    {
+      "id": 3,
+      "title": "Осень пришла!",
+      "date": "28.09.2020",
+      "img": "img4.jpg",
+      "bigVideo": "big4.jpg",
+      "alt": "img4"
+    }
+  ],
+  "contacts": [
+    {
+      "id": 0,
+      "name": "Vadim",
+      "email": "develcool@gmail.com",
+      "text": "hello"
+    },
+    {
+      "name": "luvlut",
+      "email": "j",
+      "text": "ljgv",
+      "id": 1
+    }
+  ]
+}
