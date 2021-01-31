@@ -1,7 +1,7 @@
 const firebase = require('firebase/app');
 // import firebase from 'firebase/app'; 
 require('firebase/firestore');
-require('firebase/storage')
+require('firebase/storage');
 
 const firebaseConfig = {
   apiKey: "AIzaSyCv8vvXtMjD18ZZ8NcEXF14sZqRq0eupwo",
@@ -24,7 +24,6 @@ async function getData() {
   res.docs.forEach(doc => {
     worksData.push(doc.data())
   })
-
 }
 
 async function getImages() {
@@ -37,7 +36,7 @@ async function getImages() {
   })
   this.imgs = await Promise.all(promises);
   console.log('imgs');
-  this.merge();
+  merge();
 }
 
 function merge() {

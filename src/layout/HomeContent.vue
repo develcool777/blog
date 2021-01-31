@@ -17,8 +17,7 @@
 			</section>
 			<Pagination 
 				v-if="render"
-				:Pages="AmountOfPages"
-				:Right="rightEdge"
+				:Pages="pages"
 				v-on:changePage="change($event)"
 			/>
 		</div>
@@ -32,6 +31,10 @@
 </template>
 
 <script>
+// import firebase from 'firebase/app';
+// import "firebase/firestore";
+// import "firebase/storage";
+
 const url = 'http://localhost:3000/videos';
 const url2 = 'http://localhost:3000/homeData';
 const url3 = 'http://localhost:3000/homeDataMore';
@@ -56,8 +59,7 @@ export default {
 			ItemData: [],
 			ItemDataMore: {},
 			currentPage: 0,
-			AmountOfPages: [],
-			rightEdge: 0,
+			pages: [],
 			onPage: 5, 
 			render: false,
 			isShow: true,
@@ -74,8 +76,7 @@ export default {
 			this.VideoData = await this.api.makeGet();
 			const data = await this.api2.makeGet();
 			this.ItemData = data.reverse();
-			this.pages();
-			this.right();
+			this.createPages();
 			this.render = true;
 		},
 		async getMore(id) {
@@ -90,18 +91,14 @@ export default {
 			const right = left + this.onPage;
 			return this.ItemData.slice(left, right);
 		},
-		pages() {
+		createPages() {
 			const amount = Math.ceil(this.ItemData.length / 5);
 			for (let i = 1; i <= amount; i++) {
-				this.AmountOfPages.push(i);
+				this.pages.push(i);
 			}
 		},
-		right() {
-			const pages = this.AmountOfPages.length;
-			this.rightEdge = pages < 3 ? pages : 3;
-		},
 		change(i) {
-			this.currentPage = i;
+			this.currentPage = i-1;
 		},
 		showMore(id) {
 			this.getMore(id)

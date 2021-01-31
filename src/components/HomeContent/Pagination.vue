@@ -1,62 +1,70 @@
 <template>
   <div class="pagination">
+    <div class="pagination__item pagination__start" @click="toStart()"></div>
     <div class="pagination__item pagination__prev" @click="changeLeft()"></div>
     <div class="pagination__item" 
-      v-for="(num, i) in Pages.slice(left, right)" 
+      v-for="(num, i) in pagesToShow" 
       :key="i"
-      :class="{activePage: active === num - 1}"
-      @click="changePage(num - 1)"
+      :class="{activePage: active === num}"
+      @click="userChoosePage(num)"
       >{{num}}
     </div>
     <div class="pagination__item pagination__next" @click="changeRight()"></div>
+    <div class="pagination__item pagination__end" @click="toEnd()"></div>
   </div>
 </template>
 
 <script>
+import Pagination from '@/services/pagination';
 export default {
   name: 'Pagination',
   props: {
     Pages: {
       type: Array
-    },
-    Right: {
-      type: Number
     }
   },
   data() {
     return {
-      left: 0,
-      right: this.Right,
+      pag: new Pagination(this.Pages),
+      pagesToShow: [],
       active: 0
     }
   },
+  mounted() {
+    this.initial(); 
+  },
   methods: {
+    initial() {
+      this.pagesToShow = this.pag.pagesShow();
+      this.active = this.pag.currentPage();
+    },
     changeLeft() {
-      if (this.left > 0) {
-        this.left -= 1
-        this.right -= 1  
-      }
-      if (this.active > 0) {
-        this.active -= 1
-        this.$emit('changePage', this.active);
-      }
-      console.log('L',this.left,  this.right, this.Pages.length, this.active);
+      this.pag.changeLeft();
+      this.pag.prev();
+      this.changePage();
     },
     changeRight() {
-      if (this.active >= 2 && this.active !== this.Pages.length - 1) {
-        this.left += 1
-        this.right += 1  
-      }
-      if (this.active !== this.Pages.length - 1) {
-        this.active += 1
-        this.$emit('changePage', this.active);
-      }
-      console.log('R',this.left,  this.right, this.Pages.length, this.active);
+      this.pag.changeRight();
+      this.pag.next();
+      this.changePage();
     },
-    changePage(i) {
-      this.$emit('changePage', i);
-      this.active = i
-      console.log('C',this.left,  this.right, this.Pages.length, this.active);
+    toStart() {
+      this.pag.toStart();
+      this.changePage();
+    },
+    toEnd() {
+      this.pag.toEnd();
+      this.changePage();
+    },
+    userChoosePage(page) {
+      this.pag.userChoosePage(page)
+      this.changePage();
+    },
+    changePage() {
+      this.active = this.pag.currentPage();
+      this.pagesToShow = this.pag.pagesShow();
+      this.$emit('changePage', this.active);
+      this.pag.log(); 
     }
   }
 }
@@ -65,7 +73,7 @@ export default {
 <style lang="scss">
 .pagination {
   margin: rem(80) auto 0;
-  width: rem(240);
+  width: rem(340);
   @include Flex(space-between);
   &__item {
     display: flex;
@@ -86,10 +94,10 @@ export default {
     @include boxShadow(0.5);
     background-color: $activePage;
   }
-  &__prev, &__next {
+  &__prev, &__next, &__start, &__end {
     position: relative;
   }
-  &__prev::before, &__next::before {
+  &__prev::before, &__next::before, &__start::before, &__end::before{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -98,8 +106,14 @@ export default {
   &__prev::before {
     content: "<";
   }
-  &__next::after {
+  &__next::before {
     content: ">";
+  }
+  &__start::before {
+    content: "<<";
+  }
+  &__end::before {
+    content: ">>";
   }
 }
 .activePage {
