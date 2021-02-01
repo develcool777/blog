@@ -64,7 +64,7 @@ export default {
       this.active = this.pag.currentPage();
       this.pagesToShow = this.pag.pagesShow();
       this.$emit('changePage', this.active);
-      this.pag.log(); 
+      // this.pag.log(); 
     }
   }
 }

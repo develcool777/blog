@@ -4,8 +4,8 @@
 			<section class="content__videos">
 				<Video :video="item" v-for="(item, i) in VideoData" :key="i"/>
 			</section>
-			<Input v-on:reload="getRequest()"/>
-			<section class="content__items" >
+			<Input v-on:reload="getData('HomeData', this.ItemData)"/>
+			<section class="content__items">
 				<Item 
 					class="content__item" 
 					v-for="(item, i) in chosenItems(currentPage)" 
@@ -27,13 +27,14 @@
 				v-on:back="back()"
 			/>
 		</div>
+		<ProgressBar v-if="false"/>
   </div>
 </template>
 
 <script>
-// import firebase from 'firebase/app';
-// import "firebase/firestore";
-// import "firebase/storage";
+import firebase from 'firebase/app';
+import "firebase/firestore";
+import "firebase/storage";
 
 const url = 'http://localhost:3000/videos';
 const url2 = 'http://localhost:3000/homeData';
@@ -44,6 +45,7 @@ import Input from '@/components/HomeContent/Input';
 import Item from '@/components/HomeContent/Item';
 import Pagination from '@/components/HomeContent/Pagination';
 import More from '@/components/HomeContent/More';
+import ProgressBar from '@/components/ProgressBar';
 export default {
 	name: 'HomeContent',
 	components: {
@@ -51,7 +53,8 @@ export default {
 		Input,
 		Item,
 		Pagination,
-		More
+		More,
+		ProgressBar
 	},
 	data() {
 		return {
@@ -66,18 +69,30 @@ export default {
 			api: new Api(url),
 			api2: new Api(url2),
 			api3: new Api(url3),
+			test: [],
+			imgs: []
 		}
 	},
-	mounted() {
-		this.getRequest();
+	created() {
+		this.getData('Videos', this.VideoData);
+		this.getData('HomeData', this.ItemData, true);
 	},
 	methods: {
-		async getRequest() {
-			this.VideoData = await this.api.makeGet();
-			const data = await this.api2.makeGet();
-			this.ItemData = data.reverse();
-			this.createPages();
-			this.render = true;
+		async getData(location, result, pages=false) {
+			const db = firebase.firestore();
+			// db.settings({timestampsInSnapshots: true});
+			const res = await db.collection(location).get();
+			// res.on('state_changed',
+			// function progress(snapshot) {
+			// 	console.log("snapshot: " + snapshot);
+			// 	const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			// 	console.log("percentage: " + percentage);
+			// })
+			console.log(this.ItemDataLen);
+			res.docs.forEach(doc => {
+				result.push(doc.data())
+			})
+			if (pages) { this.createPages() }
 		},
 		async getMore(id) {
 			this.ItemDataMore = await this.api3.makeGet(`/${id}`);
@@ -96,6 +111,7 @@ export default {
 			for (let i = 1; i <= amount; i++) {
 				this.pages.push(i);
 			}
+			this.render = true;
 		},
 		change(i) {
 			this.currentPage = i-1;

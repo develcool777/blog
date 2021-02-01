@@ -1,10 +1,10 @@
 <template>
 	<div class="video" @click="show(video.id)">
-		<img :src="require(`@/assets/HomeContent/small/${video.img}`)" :alt="video.alt" class="video__img">
+		<img :src="video.img" :alt="video.alt" class="video__img">
 		<div class="video__title">{{video.title}}</div>
 		<div class="video__date">{{video.date}}</div>
 	</div>
-	<BigVideo :showVideo="showVideo" :url="video.bigVideo" :id="video.id" v-on:closeBigVideo="show($event)"/>
+	<BigVideo :showVideo="showVideo" :url="video.video" :id="video.id" v-on:closeBigVideo="show($event)"/>
 </template>
 
 <script>

@@ -1,14 +1,14 @@
 <template>
   <div class="item">
     <section class="item__cimg" v-if="cheak(Item.img)">
-      <img class="item__img" :src="require(`@/assets/Item/${Item.img}`)" :alt="Item.alt">
+      <img class="item__img" :src="Item.img" :alt="Item.alt">
     </section>
     <section class="item__info">
       <h3 class="item__title">{{Item.title}}</h3>
       <p class="item__text">{{Item.text}}</p>
       <div class="item__footer">
         <div class="item__merge">
-          <div class="item__date">{{Item.data}}</div>
+          <div class="item__date">{{Item.date}}</div>
           <div class="item__dot" v-if="cheak(Item.label)"></div>
           <div class="item__label">{{Item.label}}</div>
         </div>

@@ -60,9 +60,6 @@ class Pagination {
     this.left = this.right < 3 ? 0 : this.right - 3;
   }
   pagesShow() {
-    if (typeof this.left !== 'number' && typeof this.right !== 'number') {
-      throw Error(`Pagination.pagesShow() left and right must be Number`);
-    }
     return this.pages.slice(this.left, this.right);
   }
 }

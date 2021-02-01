@@ -3,7 +3,7 @@
 		<div class="modal" v-if="show()">
 			<div class="mask" @click="close()"></div>
 			<div class="bigVideo center">
-				<img class="bigVideo__video" :src="require(`@/assets/HomeContent/big/${url}`)" alt="">
+				<img class="bigVideo__video" :src="url" alt="">
 			</div>
 		</div>
   </transition>
