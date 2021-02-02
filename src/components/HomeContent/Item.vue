@@ -15,7 +15,7 @@
         <div class="item__btn" @click="showMore(Item.id)">{{Item.btn}}</div>
       </div>
     </section>
-    <div class="item__close" @click="closeItem(Item.id)"></div>
+    <div class="item__close" @click="deleteItem(Item.imgName, Item.docName)"></div>
   </div>
 </template>
 
@@ -31,8 +31,13 @@ export default {
     cheak(str) {
       return str !== '' ? true : false;
     },
-    closeItem(id) {
-      this.$emit('deleteID', id);
+    deleteItem(name, id) {
+      let isImg = true
+      if (name === '') {
+        isImg = false
+      }
+      const obj = {id, isImg, name}
+      this.$emit('deleteItem', obj);
     },
     showMore(id) {
       this.$emit('more', id);

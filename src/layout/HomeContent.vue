@@ -2,16 +2,22 @@
   <div class="content">
 		<div class="wrapper" v-if="isShow">
 			<section class="content__videos">
-				<Video :video="item" v-for="(item, i) in VideoData" :key="i"/>
+				<Video 
+					:video="item" 
+					v-for="(item, i) in VideoData" 
+					:key="i"/>
 			</section>
-			<Input v-on:reload="getData('HomeData', this.ItemData)"/>
+			<Input 
+				v-on:reload="reload()" 
+				:Id="ItemDataLen"
+			/>
 			<section class="content__items">
 				<Item 
 					class="content__item" 
 					v-for="(item, i) in chosenItems(currentPage)" 
 					:key="i" 
 					:Item="item"
-					v-on:deleteID="deleteItem($event)"
+					v-on:deleteItem="deleteItem($event)"
 					v-on:more="showMore($event)"
 				/>
 			</section>
@@ -36,10 +42,6 @@ import firebase from 'firebase/app';
 import "firebase/firestore";
 import "firebase/storage";
 
-const url = 'http://localhost:3000/videos';
-const url2 = 'http://localhost:3000/homeData';
-const url3 = 'http://localhost:3000/homeDataMore';
-import Api from '@/services/api';
 import Video from '@/components/HomeContent/Video';
 import Input from '@/components/HomeContent/Input';
 import Item from '@/components/HomeContent/Item';
@@ -60,58 +62,87 @@ export default {
 		return {
 			VideoData: [],
 			ItemData: [],
+			ItemDataLen: 0,
+			amountOfImgs: 0,
 			ItemDataMore: {},
 			currentPage: 0,
 			pages: [],
 			onPage: 5, 
 			render: false,
 			isShow: true,
-			api: new Api(url),
-			api2: new Api(url2),
-			api3: new Api(url3),
-			test: [],
-			imgs: []
 		}
 	},
 	created() {
-		this.getData('Videos', this.VideoData);
-		this.getData('HomeData', this.ItemData, true);
+		this.init();
 	},
 	methods: {
-		async getData(location, result, pages=false) {
+		async init() {
+			this.VideoData = await this.getData('Videos');
+			this.ItemData = await this.getData('HomeData', true);
+		},
+		async reload() {
+			this.ItemData = await this.getData('HomeData', true);
+		},
+		async getData(location, pages=false) {
+			const result = [];
 			const db = firebase.firestore();
 			// db.settings({timestampsInSnapshots: true});
-			const res = await db.collection(location).get();
+			const collection = await db.collection(location).get();
 			// res.on('state_changed',
 			// function progress(snapshot) {
 			// 	console.log("snapshot: " + snapshot);
 			// 	const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 			// 	console.log("percentage: " + percentage);
 			// })
-			console.log(this.ItemDataLen);
-			res.docs.forEach(doc => {
-				result.push(doc.data())
+			// console.log(res.docs.length);
+			collection.docs.forEach(doc => {
+				const merged = this.merge(doc.data(), doc.id, 'docName');
+				result.push(merged)
 			})
-			if (pages) { this.createPages() }
+			if (pages) { 
+				const imgs = firebase.storage().ref('homeData');
+				this.amountOfImgs = (await imgs.listAll()).items.length;
+				this.ItemDataLen = collection.docs.length;
+				this.$nextTick(() => {
+					this.pages = this.createPages(result) 
+				});
+				result.reverse();
+			}
+			return result;
+		},
+		merge(obj, value, key) {
+			if (obj[key] === undefined) {
+				obj[key] = value;
+			}
+			return obj;
 		},
 		async getMore(id) {
 			this.ItemDataMore = await this.api3.makeGet(`/${id}`);
 		},
-		async deleteItem(id) {
-			await this.api2.makeDelete(`/${id}`);
-			this.getRequest();
+		async deleteItem(obj) {
+			const {id, isImg, name} = obj
+			if (isImg) {
+				const imgs = firebase.storage().ref('homeData').child(name);
+				await imgs.delete();
+			}
+			const data = firebase.firestore().collection('HomeData').doc(id);
+			await data.delete();
+			console.log('done');
+			this.reload();
 		},
 		chosenItems(i) {
 			const left = i * this.onPage;
 			const right = left + this.onPage;
 			return this.ItemData.slice(left, right);
 		},
-		createPages() {
-			const amount = Math.ceil(this.ItemData.length / 5);
+		createPages(data) {
+			const amount = Math.ceil(data.length / 5);
+			const result = [];
 			for (let i = 1; i <= amount; i++) {
-				this.pages.push(i);
+				result.push(i);
 			}
 			this.render = true;
+			return result;
 		},
 		change(i) {
 			this.currentPage = i-1;

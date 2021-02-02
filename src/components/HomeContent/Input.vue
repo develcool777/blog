@@ -1,10 +1,22 @@
 <template>
 	<div class="input">
 		<div class="input__contener">
-			<input class="input__field" type="text" placeholder="Напишите что нибудь" v-model="msg" v-on:keyup.enter="post()">
+			<input 
+				class="input__field" 
+				type="text" 
+				placeholder="Напишите что нибудь" 
+				v-model="msg" 
+				v-on:keyup.enter="post()"
+			>
 		</div> 
 		<div class="input__btn" @click="$refs.fileInput.click()">
-			<input class="input__upload" type="file" ref="fileInput">
+			<input 
+				class="input__upload" 
+				type="file" 
+				ref="fileInput"
+				accept="images/*"
+				@change="onFilePicked"
+			>
 			<img src="@/assets/Input/photo.png" alt="upload">
 		</div>
 		<div class="input__btn" @click="post()">
@@ -13,40 +25,85 @@
 	</div>
 </template>
 <script>
-const url = 'http://localhost:3000/homeData';
+import firebase from 'firebase/app';
+import "firebase/firestore";
+import "firebase/storage";
 import CurrentDate from '@/mixins/currentDate';
-import Api from '@/services/api';
 export default {
 	name: 'Name',
 	mixins: [CurrentDate],
+	props: {
+		Id: {
+			type: Number
+		} 
+	},
 	data() {
 		return {
-			api: new Api(url),
 			msg: '',
+			imgUrlForPreview: '',
+			imgUrlFirebase: '',
+			image: null,
+			imageName: '',
+			uploadValue: 0,
+			isImage: false
 		}
 	},
 	methods: {
-		object() {
-			return {
-				title: '',
-				text: this.msg,
-				data: this.currentDate(),
-				label: '',
-				img: '',
-				alt: '',
-				btn: ''
-			} 
-		},
 		async post() {
 			if (this.cheak(this.msg)) {
-				await this.api.makePost(this.object());
-				this.msg = ''
+				if (this.isImage) { 
+					console.log('how')
+					await this.upload() 
+				}
+				const db = firebase.firestore();
+				const id = this.Id + 1;
+				await db.collection('HomeData').doc(`${id}`).set({
+					title: '',
+					text: this.msg,
+					date: this.currentDate(),
+					label: '',
+					img: this.imgUrlFirebase,
+					imgName: this.imageName,
+					alt: '',
+					btn: ''
+				});
+				console.log('here pls');
+				this.msg = '';
+				this.image = null;
+				this.imageName = '';
+				this.imgUrlFromFirebase = '';
+				this.imgUrlForPreview = ''; 
+				this.isImage = false;
 				this.$emit('reload');
 			}
 		},
     cheak(str) {
 			return str === '' ? false : true;
-    },
+		},
+		onFilePicked(event) {
+			const files = event.target.files;
+			const fileName = files[0].name;
+			if (fileName.lastIndexOf('.') <= 0) {
+				return alert('please add normal file');
+			}
+			// const fileReader = new FileReader();
+			// fileReader.addEventListener('load', () => {
+			// 	this.imgUrlForPreview = fileReader.result;
+			// })	
+			// fileReader.readAsDataURL(files[0]);
+			this.image = files[0];
+			const splitByDot =  fileName.split('.');
+			this.imageName = `img${this.Id + 1}.${splitByDot[splitByDot.length - 1]}`
+			this.isImage = true;
+		},
+		async upload() {
+			const storage = firebase.storage().ref('homeData').child(`${this.imageName}`);
+			await	storage.put(this.image)
+			this.imgUrlFirebase = await storage.getDownloadURL();
+			// storage.put(this.image).on('loading', snapshot => {
+			// 	this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+			// })
+		},
 	}
 }
 </script>

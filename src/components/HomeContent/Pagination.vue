@@ -33,6 +33,12 @@ export default {
   mounted() {
     this.initial(); 
   },
+  watch: {
+    Pages(newValue) {
+      this.pag = new Pagination(newValue);
+      this.initial();
+    }
+  },
   methods: {
     initial() {
       this.pagesToShow = this.pag.pagesShow();
