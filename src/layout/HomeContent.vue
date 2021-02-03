@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" :style="{height: '100vh'}">
 		<div class="wrapper" v-if="isShow">
 			<section class="content__videos">
 				<Video 
@@ -27,13 +27,15 @@
 				v-on:changePage="change($event)"
 			/>
 		</div>
-		<div class="wrapper" v-else>
+		<div class="wrapper content__data">
+			<ProgressBar class="content__progress" :step="1"/>		
+		</div>
+		<div class="wrapper">
 			<More 
 				:Item="ItemDataMore"
 				v-on:back="back()"
 			/>
 		</div>
-		<ProgressBar v-if="false"/>
   </div>
 </template>
 
@@ -69,7 +71,7 @@ export default {
 			pages: [],
 			onPage: 5, 
 			render: false,
-			isShow: true,
+			isShow: false,
 		}
 	},
 	created() {
@@ -180,5 +182,17 @@ export default {
 	&__item:last-child {
 		margin-bottom: 0;
 	}
+	&__data {
+		z-index: 10;
+		background-color: red;
+		height: 100%;
+	}
+	&__progress {
+		padding-top: rem(300); 
+		@include Flex(center);
+	}
+}
+[v-cloak] {
+  display: none;
 }
 </style>

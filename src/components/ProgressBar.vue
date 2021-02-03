@@ -33,6 +33,7 @@ export default {
 
 <style lang="scss">
 .progress {
+  display: inline-block;
   &__loading {
     position: relative;
     width: rem(400);

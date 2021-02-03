@@ -75,6 +75,7 @@ export default {
     font-size: rem(14);
     font-weight: normal;
     max-height: rem(80);
+    word-wrap: break-word;
     overflow: hidden;
     color: $text;
     line-height: 1.5;

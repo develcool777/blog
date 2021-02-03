@@ -9,7 +9,11 @@
 				v-on:keyup.enter="post()"
 			>
 		</div> 
-		<div class="input__btn" @click="$refs.fileInput.click()">
+		<div 
+			class="input__btn" 
+			@click="addImg($refs)" 
+			:style="{cursor: imageAdded ? 'default' : 'pointer'}"
+		>
 			<input 
 				class="input__upload" 
 				type="file" 
@@ -17,21 +21,32 @@
 				accept="images/*"
 				@change="onFilePicked"
 			>
-			<img src="@/assets/Input/photo.png" alt="upload">
+			<div class="input__selected" v-if="imageAdded" @click="preview()"></div>
+			<img src="@/assets/Input/photo.svg" alt="upload">
 		</div>
 		<div class="input__btn" @click="post()">
-			<img src="@/assets/Input/send.png" alt="arrow">
+			<img src="@/assets/Input/send.svg" alt="arrow">
 		</div>
 	</div>
+	<Preview 
+		:status="showPreview"
+		:imgUrl="imgUrlForPreview"
+		v-on:close="closePreview()"
+		v-on:delete="deletePreview()"
+	/>
 </template>
 <script>
 import firebase from 'firebase/app';
 import "firebase/firestore";
 import "firebase/storage";
 import CurrentDate from '@/mixins/currentDate';
+import Preview from '@/components/HomeContent/Input/Preview';
 export default {
 	name: 'Name',
 	mixins: [CurrentDate],
+	components: {
+		Preview
+	},
 	props: {
 		Id: {
 			type: Number
@@ -42,17 +57,18 @@ export default {
 			msg: '',
 			imgUrlForPreview: '',
 			imgUrlFirebase: '',
-			image: null,
+			image: '',
 			imageName: '',
 			uploadValue: 0,
-			isImage: false
+			isImage: false,
+			imageAdded: false,
+			showPreview: false,
 		}
 	},
 	methods: {
 		async post() {
 			if (this.cheak(this.msg)) {
 				if (this.isImage) { 
-					console.log('how')
 					await this.upload() 
 				}
 				const db = firebase.firestore();
@@ -69,36 +85,85 @@ export default {
 				});
 				console.log('here pls');
 				this.msg = '';
-				this.image = null;
-				this.imageName = '';
-				this.imgUrlFromFirebase = '';
-				this.imgUrlForPreview = ''; 
-				this.isImage = false;
+				this.deletePreview();
+				// this.image = '';
+				// this.imageName = '';
+				// this.imgUrlFirebase = '';
+				// this.imgUrlForPreview = ''; 
+				// this.isImage = false;
 				this.$emit('reload');
+				console.log('posted');
 			}
 		},
     cheak(str) {
 			return str === '' ? false : true;
 		},
-		onFilePicked(event) {
-			const files = event.target.files;
-			const fileName = files[0].name;
-			if (fileName.lastIndexOf('.') <= 0) {
-				return alert('please add normal file');
+		preview() {
+			this.showPreview = true;
+			console.log('preview');
+		},
+		closePreview() {
+			this.showPreview = false
+		},
+		deletePreview() {
+			this.image = '';
+			this.imageName = '';
+			this.imgUrlFirebase = '';
+			this.imgUrlForPreview = ''; 
+			this.isImage = false;
+			this.showPreview = false;
+			this.imageAdded = false;
+			console.log('del');
+		},
+		addImg(e) {
+			if (!this.imageAdded) {
+				e.fileInput.click()
 			}
-			// const fileReader = new FileReader();
-			// fileReader.addEventListener('load', () => {
-			// 	this.imgUrlForPreview = fileReader.result;
-			// })	
-			// fileReader.readAsDataURL(files[0]);
-			this.image = files[0];
+		},
+		typeOfError() {
+
+		},
+		onFilePicked(event) {
+			const MAX_SIZE = 100000;
+			const MAX_WIDTH = 700;
+			const MAX_HEIGHT = 300;
+			const file = event.target.files[0];
+			const fileName = file.name;
+			if (fileName.lastIndexOf('.') <= 0) {
+				return alert('please add file with extention: .png, .jpg, jpeg');
+				// this.typeOfError();
+			}
+			// console.log(file.size);
+			if (file.size > MAX_SIZE) {
+				console.log('Error');
+			}
+			const fileReader = new FileReader();
+			fileReader.readAsDataURL(file);
+			fileReader.onload = e => {
+				this.imgUrlForPreview = fileReader.result;
+				const src = e.target.result;
+				const img = new Image();
+				img.onload = () => {
+					if (img.width > MAX_WIDTH) {
+						console.log('img width');
+					}
+					if (img.width > MAX_HEIGHT) {
+						console.log('img height');
+					}
+					console.log(img.width, img.height, 'iqbrvpbqip');
+						// this.$emit('loaded', {src, file, width: img.width});
+				};
+				img.src = src;
+			}
+			this.image = file;
 			const splitByDot =  fileName.split('.');
-			this.imageName = `img${this.Id + 1}.${splitByDot[splitByDot.length - 1]}`
+			this.imageName = `img${this.Id + 1}.${splitByDot[splitByDot.length - 1]}`;
 			this.isImage = true;
+			this.imageAdded = true;
 		},
 		async upload() {
 			const storage = firebase.storage().ref('homeData').child(`${this.imageName}`);
-			await	storage.put(this.image)
+			await	storage.put(this.image);
 			this.imgUrlFirebase = await storage.getDownloadURL();
 			// storage.put(this.image).on('loading', snapshot => {
 			// 	this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
@@ -131,6 +196,7 @@ export default {
 		color: $white;
 	}
 	&__btn {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -143,6 +209,16 @@ export default {
 	}
 	&__btn:last-child {
 		background-color: $active;
+	}
+	&__selected {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: red;
+		cursor: pointer;
 	}
 	&__upload {
 		display: none;
